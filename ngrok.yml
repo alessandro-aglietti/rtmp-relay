@@ -1,0 +1,6 @@
+version: 2
+authtoken: <your ngrok token here>
+tunnels:
+  rtmp:
+    proto: tcp
+    addr: 8193

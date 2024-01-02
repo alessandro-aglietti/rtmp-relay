@@ -1,0 +1,16 @@
+web:
+  image: debian:12.4
+  container_name: nginx-rtmp-relay
+  command: ["nginx", "-g", "daemon off;"]
+  entrypoint: "/docker-entrypoint.d/100-rtmp-relay.sh"
+  volumes:
+    - ./entrypoint.sh:/docker-entrypoint.d/100-rtmp-relay.sh
+    - ./rtmp.conf:/docker-entrypoint.d/100-rtmp.conf
+    - ./rtmp-mon.conf:/etc/nginx/sites-enabled/rtmp-mon.conf
+    - ./rtmp-live.conf:/etc/nginx/sites-enabled/rtmp-live.conf
+    - ./stat.xsl:/var/www/html/rtmp/stat.xsl
+  ports:
+   - "8080:80" # / hello world
+   - "8081:8081" # -8081.app.github.dev/stat
+   - "8089:8089" # for OBS -8089.app.github.dev/hls/stream.m3u8 OR -8089.app.github.dev/dash/stream.mpd
+   - "8193:1935" # to push RTMP stream (from ffmpeg or GoPro) -8193.app.github.dev/live/stream or over the ngrok tunnel
